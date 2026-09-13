@@ -4,13 +4,14 @@ const emptyForm = { name: "", price: "", stock: "" };
 
 export default function ProductForm({ initialValues, onSubmit, onCancel }) {
   const [values, setValues] = useState(
-    initialValues
+    initialValues // inicializa el formulario con los datos del producto. Si no viene (undefined/null, creando)
       ? { name: initialValues.name, price: initialValues.price, stock: initialValues.stock }
       : emptyForm
   );
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState(null);
 
+  // Actualiza el estado del formulario cuando el usuario cambia un campo.
   function handleChange(e) {
     const { name, value } = e.target;
     setValues((prev) => ({ ...prev, [name]: value }));
@@ -21,15 +22,15 @@ export default function ProductForm({ initialValues, onSubmit, onCancel }) {
     setFormError(null);
     setSubmitting(true);
     try {
-      await onSubmit({
+      await onSubmit({ // Enviamos los datos del formulario al servicio
         name: values.name.trim(),
         price: Number(values.price),
         stock: Number(values.stock),
       });
     } catch (err) {
-      setFormError(err.message);
+      setFormError(err.message); // Si ocurre un error, lo mostramos en el formulario 
     } finally {
-      setSubmitting(false);
+      setSubmitting(false); // Siempre desactivamos el estado de envío, incluso si hubo un error
     }
   }
 

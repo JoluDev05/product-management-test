@@ -6,6 +6,7 @@ export function useProducts(search) {
   const [status, setStatus] = useState("loading"); // loading | success | error
   const [error, setError] = useState(null);
 
+  //usar el usecallback evita que la función se recree en cada render innecesariamente
   const fetchProducts = useCallback(async () => {
     setStatus("loading");
     setError(null);
@@ -19,10 +20,13 @@ export function useProducts(search) {
     }
   }, [search]);
 
+  // se dispara la funcion cada que cambia el search, 
+  // para obtener los productos filtrados por el término de búsqueda
   useEffect(() => {
-    fetchProducts();
+    fetchProducts(); 
   }, [fetchProducts]);
 
+  // Funciones para agregar, editar y eliminar productos, actualizando el estado local
   async function addProduct(product) {
     const created = await api.createProduct(product);
     setProducts((prev) => [created, ...prev]);

@@ -15,8 +15,10 @@ export default function App() {
   const [editingProduct, setEditingProduct] = useState(undefined);
   const [productToDelete, setProductToDelete] = useState(null);
 
+  // Determina si el formulario de producto está abierto (ya sea para crear o editar un producto)
   const isFormOpen = editingProduct !== undefined;
 
+  // Maneja el envío del formulario de producto, ya sea para crear un nuevo producto o editar uno existente
   async function handleSubmit(values) {
     if (editingProduct?.id) {
       await editProduct(editingProduct.id, values);
@@ -26,6 +28,7 @@ export default function App() {
     setEditingProduct(undefined);
   }
 
+  // Maneja la confirmación de eliminación de un producto, eliminándolo del estado y cerrando el diálogo de confirmación
   async function handleConfirmDelete() {
     await removeProduct(productToDelete.id);
     setProductToDelete(null);
