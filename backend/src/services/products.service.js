@@ -1,5 +1,6 @@
 const db = require("../db");
 
+// Convierte una fila de la base de datos en la respuesta de la API.
 function toDTO(row) {
   return {
     id: row.id,
@@ -10,8 +11,11 @@ function toDTO(row) {
   };
 }
 
+// Las consultas parametrizadas separan los valores del SQL y evitan inyecciones.
+
 function getAll({ search } = {}) {
   let rows;
+  // Filtra por nombre solo cuando se recibe un término de búsqueda.
   if (search) {
     rows = db
       .prepare("SELECT * FROM products WHERE LOWER(name) LIKE LOWER(?) ORDER BY id DESC")
@@ -38,6 +42,7 @@ function update(id, { name, price, stock }) {
   const existing = db.prepare("SELECT * FROM products WHERE id = ?").get(id);
   if (!existing) return null;
 
+  // Conserva los campos que no fueron enviados en la actualización.
   db.prepare("UPDATE products SET name = ?, price = ?, stock = ? WHERE id = ?").run(
     name ?? existing.name,
     price ?? existing.price,

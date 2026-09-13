@@ -3,6 +3,7 @@ function validateProduct(req, res, next) {
   const isCreate = req.method === "POST";
   const errors = [];
 
+  // En POST todos los campos son obligatorios; en PATCH solo se validan los enviados.
   if (isCreate || name !== undefined) {
     if (typeof name !== "string" || name.trim().length === 0) {
       errors.push("name es obligatorio y debe ser texto no vacio");
@@ -22,9 +23,11 @@ function validateProduct(req, res, next) {
   }
 
   if (errors.length > 0) {
+    // Detiene la petición y devuelve todos los errores encontrados.
     return res.status(400).json({ error: "Datos invalidos", details: errors });
   }
 
+  // Continúa hacia el controlador cuando los datos son válidos.
   next();
 }
 

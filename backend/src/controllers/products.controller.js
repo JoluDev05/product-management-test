@@ -1,5 +1,6 @@
 const productsService = require("../services/products.service");
 
+// Obtiene todos los productos, aplicando el filtro de búsqueda si existe.
 function list(req, res) {
   try {
     const { search } = req.query;
@@ -11,6 +12,7 @@ function list(req, res) {
   }
 }
 
+// Busca un producto por su ID y responde con 404 si no existe.
 function getOne(req, res) {
   try {
     const product = productsService.getById(req.params.id);
@@ -24,6 +26,7 @@ function getOne(req, res) {
   }
 }
 
+// Crea un producto con los datos recibidos en el cuerpo de la petición.
 function create(req, res) {
   try {
     const { name, price, stock } = req.body;
@@ -35,6 +38,7 @@ function create(req, res) {
   }
 }
 
+// Actualiza los campos enviados de un producto existente.
 function update(req, res) {
   try {
     const { name, price, stock } = req.body;
@@ -53,6 +57,7 @@ function update(req, res) {
   }
 }
 
+// Elimina un producto y devuelve 204 cuando la operación tiene éxito.
 function remove(req, res) {
   try {
     const deleted = productsService.remove(req.params.id);
